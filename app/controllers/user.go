@@ -5,7 +5,6 @@ import (
 	"echo-go/app/repositories"
 	"echo-go/config"
 	"echo-go/response"
-	"net/http"
 
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/google/uuid"
@@ -25,7 +24,7 @@ import (
 // @Router       /user [get]
 func GetUser(c echo.Context) error {
 	user := []models.User{}
-	formated := []models.ResponseData{}
+	result := []models.ResponseData{}
 	raw := models.ResponseData{}
 
 	data, err := repositories.GetUser(user)
@@ -33,8 +32,7 @@ func GetUser(c echo.Context) error {
 		raw = models.ResponseData{ID: data[i].ID, Name: data[i].Name, Username: data[i].Username}
 
 	}
-	formated = append(formated, raw)
-	result := models.DataResponseOk{Data: formated, Message: "OK", Code: http.StatusOK}
+	result = append(result, raw)
 
 	if err != nil {
 		return response.InternalServerError(c)
@@ -85,8 +83,7 @@ func GetUserByID(c echo.Context) error {
 	id := uuid.MustParse(c.Param("id"))
 
 	data, err := repositories.GetUserByID(user, id)
-	formated := models.ResponseData{ID: data.ID, Name: data.Name, Username: data.Username}
-	result := models.DataResponseOk{Data: formated, Message: "OK", Code: http.StatusOK}
+	result := models.ResponseData{ID: data.ID, Name: data.Name, Username: data.Username}
 
 	if err != nil {
 		return response.InternalServerError(c)
@@ -114,8 +111,7 @@ func UserProfile(c echo.Context) error {
 	id := config.JwtUserID(token)
 
 	data, err := repositories.GetUserByID(user, id)
-	formated := models.ResponseData{ID: data.ID, Name: data.Name, Username: data.Username}
-	result := models.DataResponseOk{Data: formated, Message: "OK", Code: http.StatusOK}
+	result := models.ResponseData{ID: data.ID, Name: data.Name, Username: data.Username}
 
 	if err != nil {
 		return response.InternalServerError(c)
