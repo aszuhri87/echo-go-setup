@@ -15,5 +15,7 @@ generate_docs:
 run_test:
 	go test -v ./test
 
+run: air
+
 
 
