@@ -5,6 +5,7 @@ import (
 	"echo-go/app/repositories"
 	"echo-go/app/utils"
 	"echo-go/config"
+	"echo-go/response"
 	"net/http"
 	"time"
 
@@ -29,9 +30,9 @@ func RegisterUser(c echo.Context) error {
 
 	data, err := repositories.RegisterUser(user)
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, err.Error())
+		return response.InternalServerError(c)
 	}
-	return c.JSON(http.StatusCreated, data)
+	return response.Success(c, data)
 }
 
 // Login godoc
@@ -52,13 +53,13 @@ func Login(c echo.Context) error {
 
 	data, err := repositories.Login(user)
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, err.Error())
+		return response.InternalServerError(c)
 	}
 
 	password := utils.CheckPasswordHash(user.Password, data.Password)
 
 	if !password {
-		return c.JSON(http.StatusUnauthorized, password)
+		return response.Unauthorized(c)
 	}
 
 	token := config.JwtMakeToken(data.ID)
@@ -73,5 +74,5 @@ func Login(c echo.Context) error {
 	cookie.Expires = expirationTime
 	c.SetCookie(cookie)
 
-	return c.JSON(http.StatusOK, result)
+	return response.Success(c, result)
 }

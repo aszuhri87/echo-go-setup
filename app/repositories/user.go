@@ -43,7 +43,7 @@ func CreateUser(user models.User) (models.User, error) {
 func GetUserByID(user models.User, id uuid.UUID) (models.User, error) {
 	data := models.User{ID: id}
 
-	err := config.DB.First(&data)
+	err := config.DB.Find(&data)
 
 	if err.Error != nil {
 		return data, err.Error

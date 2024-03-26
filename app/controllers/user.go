@@ -4,6 +4,7 @@ import (
 	"echo-go/app/models"
 	"echo-go/app/repositories"
 	"echo-go/config"
+	"echo-go/response"
 	"net/http"
 
 	"github.com/golang-jwt/jwt/v5"
@@ -36,9 +37,9 @@ func GetUser(c echo.Context) error {
 	result := models.DataResponseOk{Data: formated, Message: "OK", Code: http.StatusOK}
 
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, err.Error())
+		return response.InternalServerError(c)
 	}
-	return c.JSON(http.StatusOK, result)
+	return response.Success(c, result)
 }
 
 // CreateUser godoc
@@ -59,9 +60,9 @@ func CreateUser(c echo.Context) error {
 
 	data, err := repositories.CreateUser(user)
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, err.Error())
+		return response.InternalServerError(c)
 	}
-	return c.JSON(http.StatusCreated, data)
+	return response.Success(c, data)
 }
 
 // ShowUserFirst godoc
@@ -88,9 +89,9 @@ func GetUserByID(c echo.Context) error {
 	result := models.DataResponseOk{Data: formated, Message: "OK", Code: http.StatusOK}
 
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, err.Error())
+		return response.InternalServerError(c)
 	}
-	return c.JSON(http.StatusOK, result)
+	return response.Success(c, result)
 }
 
 // Profile godoc
@@ -117,9 +118,9 @@ func UserProfile(c echo.Context) error {
 	result := models.DataResponseOk{Data: formated, Message: "OK", Code: http.StatusOK}
 
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, err.Error())
+		return response.InternalServerError(c)
 	}
-	return c.JSON(http.StatusOK, result)
+	return response.Success(c, result)
 }
 
 // UpdateUser godoc
@@ -144,9 +145,9 @@ func UpdateUser(c echo.Context) error {
 
 	data, err := repositories.UpdateUser(user, id)
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, err.Error())
+		return response.InternalServerError(c)
 	}
-	return c.JSON(http.StatusCreated, data)
+	return response.Success(c, data)
 }
 
 // DeleteUser godoc
@@ -170,7 +171,7 @@ func DeleteUser(c echo.Context) error {
 
 	data, err := repositories.DeleteUser(user, id)
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, err.Error())
+		return response.InternalServerError(c)
 	}
-	return c.JSON(http.StatusOK, data)
+	return response.Success(c, data)
 }

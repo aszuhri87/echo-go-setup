@@ -24,7 +24,7 @@ func RegisterUser(user models.User) (models.User, error) {
 func Login(user models.User) (models.User, error) {
 	data := models.User{Username: user.Username}
 
-	err := config.DB.First(&data)
+	err := config.DB.Find(&data)
 
 	if err.Error != nil {
 		return data, err.Error
